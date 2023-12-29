@@ -1,0 +1,171 @@
+#Preprocesing danych !
+
+library(gapminder)
+library(dplyr)
+
+
+gapminder
+glimpse(gapminder)
+
+slice(gapminder, 12:20)
+
+a<-gapminder %>%
+  filter(year==2002)
+a
+
+filter(gapminder, year==1957)
+
+
+# Przykład 1 
+glimpse(gapminder)
+slice(gapminder, 12:20)
+
+gapminder %>%
+  filter(year==1957)
+gapminder%>%
+  arrange(desc(lifeExp)) #% uklada nam dane w okreslonej odleglosci, desc - oznacza ze malejaco%
+
+gapminder%>%
+  arrange(lifeExp) #% uklada nam dane w okreslonej odleglosci, desc - oznacza ze malejaco%
+
+
+gapminder%>%
+  mutate(lifeExp=lifeExp*12)# % funkcja mutate tworzy nowa zmiennna lub modyfikuje dawna zmianna%
+
+gapminder%>%
+  summarize(medianLifeExpecation=median(lifeExp)) #% wyznaczona mediana z lifeexp, summarize zwraca pojedyncze warosci dla statystyk%
+
+gapminder%>% 
+  group_by(year)%>%
+  summarize(medianLifeExp=median(lifeExp), maxGdpPercap=max(gdpPercap))#%  %
+
+# Zadania 1a %
+
+  #przyklad a
+v<-gapminder%>%
+  filter(country=="China", year==2002)
+v
+#przyklad b
+v<-gapminder%>%
+  filter(year==1957) %>%
+  arrange(desc(pop))
+v
+
+gapminder%>%
+  filter(year==1957)%>%
+  arrange(desc(pop))
+  
+#przyklad c
+gapminder %>%
+  filter(year==2007) %>%
+  mutate(lifeExpMonths=lifeExp*12) %>% # mutate() tworzy nam nowa zmienna o podanje nazwie i parametrach
+  arrange(desc(lifeExpMonths))
+
+#przyklad d
+  gapminder%>%
+    filter(year==1957)%>%
+    summarize( medianLifeExp=median(lifeExp), maxGdpPercap=max(gdpPercap))
+
+#przyklad e
+  gapminder%>%
+    group_by(year,continent)%>%
+    summarize(medianLifeExp = median(lifeExp), meanGdpPercap=mean(gdpPercap))
+
+# Zadanie 1b
+# a)
+  filter(starwars, species=="Mirialan")
+    
+# b)
+b<-starwars%>%
+  select(name,ends_with('color'))
+b 
+
+ #przyklad c
+starwars%>%
+  summarize(bmi=mass/(height*height)*10000)
+
+#inna metoda
+starwars%>%
+  mutate(name, bmi = mass/((height/100))^2)%>%
+  select(name:mass, bmi)
+
+# d)
+starwars%>%
+  group_by(species)%>%
+  summarize(n=n(),mass=mean(mass),height=max(height))%>%
+  filter(n>=2,mass>=10)
+
+# e)
+  e<-slice(starwars,13:14)
+e
+# f)
+f<-select(starwars,name,gender,homeworld)
+f
+
+# g)
+na_spiecies<-starwars%>%
+filter(is.na(species))%>%
+select(name,sex,homeworld)
+na_spiecies
+
+# h)
+starwars%>%
+  group_by(sex)%>%
+  summarize(n=n())
+
+starwars%>%
+  group_by(sex)%>%count()
+
+starwars%>%group_by(sex)%>%summarize(n=n())
+
+# i)
+starwars%>%
+  filter(skin_color=='fair', eye_color=='brown')%>%
+  select(name,skin_color,eye_color,sex)%>%
+  arrange(sex)
+
+
+# j)
+
+slice_sample(starwars,n=5)
+
+# k)
+starwars%>%
+  arrange(desc(height))
+
+
+starwars%>%
+  filter(!is.na(mass), !is.na(birth_year))%>%
+  arrange(desc(height))
+
+# l)
+starwars%>%
+  filter(!is.na(height))%>%
+  mutate(height_m=height*0.01)%>%
+  select(name,height_m)
+
+# TESTY
+komedie<-movies %>%
+          filter(genre=="Comedy") %>%
+          select(title, year, duration, budget, rating)
+  
+class(movies)
+komedie<-select(filter(movies,genre=="Comedy"), 
+                title, year, duration, budget, rating)
+sample_frac(tbl, size, repleace, fac...)
+size_numeric (0 < numeric <= 1) 
+#frakcja obserwacji do wykonania próby
+install.packages("rtools")
+
+# pakeit tytanic
+install.packages("Titanic")
+library("Titanic")
+View('Titanic')
+Titanic
+tytanic<-data.frame(Titanic)
+tytanic
+library("dplyr")
+tytanic%>%
+  group_by("Class")%>%
+  filter(Survived==Yes)%>%
+  summarise(n())
